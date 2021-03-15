@@ -1,195 +1,112 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "liste.h"
+#include <string.h>
 
-LinkedList *init_list(void) {
-  LinkedList *list = malloc(sizeof(LinkedList));
-  scanf("%d", &list->size);
-  list->head = NULL;
+#include "LinkedList.h"
+#include "utils.h"
 
-  return list;
-}
-
-LinkedList *read_list(LinkedList *list) {
-
-  if (list->size <= 0) {
-    return NULL;
+/*
+ * Functia primeste ca singur parametru lista si returneaza pointerul nodului 
+ * care trebuie eliminat din lista. Se verifica initial cazurile speciale care 
+ * sunt tratate separat (lista este goala, are un singur element sau doar doua
+ * elemente). Altfel, sunt utilizati trei pointeri auxiliari: prev (retine 
+ * adresa anterioara lui slow), slow (avanseaza cu pasul 1), fast (avanseaza cu
+ * pasul 2), astfel incat slow se va afla la jumatatea listei cand parcurgerea
+ * este terminata (fast ajunge la sfarsitul listei), iar prev se afla pe pozitia
+ * anterioara lui slow pentru a reface legaturile din lista
+*/
+void remove_middle(linked_list_t *list)
+{
+  if (!list->head) {
+    return;
   }
-  
-  add_first(list);
 
-  for (int i = 1; i < list->size; i++) {
-    add_nth(list, i + 1);
-  }
-
-
-  return list;
-}
-
-LinkedList *merge_list(LinkedList *list1, LinkedList *list2) {
-  LinkedList *list = malloc(sizeof(LinkedList));
-  list->size = list1->size + list2->size;
-  
-  Node *tmp = malloc(sizeof(Node));
-  list->head = tmp;
-
-  Node *a = list1->head;
-  Node *b = list2->head;
-  
-
-  while (a && b) {
-  
-    if (a->data < b->data) {
-      tmp->data = a->data;
-      a = a->next;
-    } else {
-      tmp->data = b->data;
-      b = b->next;
-    }
+  if (!list->head->next) {
+    ll_node_t *tmp = list->head;
+    list->head = NULL;
     
-    tmp->next = malloc(sizeof(Node));
-    tmp = tmp->next;
+    free_node(tmp);
   }
 
-
-  while (a) {
-    tmp->data = a->data;
-    a = a->next;
-    if (a) {
-      tmp->next = malloc(sizeof(Node));
-      tmp = tmp->next;
-    }
+  if (!list->head->next->next) {
+    ll_node_t *tmp = list->head;
+    list->head = list->head->next;
+   
+    free_node(tmp);
   }
 
-  while (b) {
-    tmp->data = b->data;
-    b = b->next;
+  ll_node_t *fast = list->head;
+  ll_node_t *slow = list->head;
+  ll_node_t *prev;
 
-    if (b) {
-      tmp->next = malloc(sizeof(Node));
-      tmp = tmp->next;
-    }
+  while (fast->next && fast->next->next) {
+    prev = slow;
+    fast = fast->next->next;
+    slow = slow->next;
   }
-  tmp->next = NULL;
-  //printList(list->head);
-  
-  return list;
+  prev->next = slow->next;
+
+  free_node(slow);
 }
 
+/*
+ *
+ * 
+ * 
+ * 
+ * 
+*/
+void reverse_list(linked_list_t *list)
+{
+  ll_node_t *prev = NULL;
+  ll_node_t *curr = list->head;
+  ll_node_t *next;
 
-void list_inversion(LinkedList *list) {
-  Node *prev = NULL;
-  Node *current = list->head;
-  Node *next = NULL;
-
-  while (current) {
-
-    next = current->next;
-
-    current->next = prev;
-
-    prev = current;
-    current = next;
+  while (curr) {
+    next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
   }
 
   list->head = prev;
 }
 
+linked_list_t *sort_2_list_int(linked_list_t *list1, linked_list_t *list2)
+{
+  linked_list_t *new_list = ll_create(list1->data_size);
+  new_list->size = list1->size + list2->size;
 
-void add_first(LinkedList *list) {
-  Node *new_head = malloc(sizeof(Node));
-  scanf("%d", &new_head->data);
+  ll_node_t *curr1 = list1->head;
+  ll_node_t *curr2 = list2->head;
+  unsigned int count = 0;
+  
+  while (curr1 && curr2) {
+    if ((*(int*)curr1->data) < (*(int*)curr2->data)) {
+      ll_add_nth_node(new_list, count, curr1->data);
+      curr1 = curr1->next;
+      count++;
+    } else {
+      ll_add_nth_node(new_list, count, curr2->data);
+      curr2 = curr2->next;
+      count++;
+    }
 
-  new_head->next = list->head;
-  list->head = new_head;  
-}
-
-void add_last(LinkedList *list) {
-  Node *new_tail = malloc(sizeof(Node));
-  Node *n = list->head;
-
-  while (n->next) {
-    n = n->next;
   }
 
-  n->next = new_tail;
-  scanf("%d", &new_tail->data);
-  new_tail->next = NULL;
-}
-
-void add_nth(LinkedList *list, int poz) {
-  Node *n = list->head;
-  int count = 1;
-
-  while (count < poz - 1 && n) {
-    n = n->next;
-    count++;
-  }
-  
-  if (!n) {
-    return;
-  }
-
-  Node *tmp = n->next;
-  Node *new_node = malloc(sizeof(Node));
-  
-  n->next = new_node;
-  scanf("%d", &new_node->data);
-  new_node->next = tmp;
-  
-}
-
-void remove_first(LinkedList *list) {
-  Node *tmp = list->head;
-  list->head = list->head->next;
-
-  free(tmp);
-}
-
-void remove_last(LinkedList *list) {
-  Node *n = list->head;
-  
-  while (n->next->next) {
-    n = n->next;
-  }
-
-  Node *tmp = n->next;
-  n->next = NULL;
-
-  free(tmp);
-}
-
-void remove_nth(LinkedList *list, int poz) {
-  int count = 1;
-  Node *n = list->head;
-
-  while (n && count < poz - 1) {
-    n = n->next;
+  while (curr1) {
+    ll_add_nth_node(new_list, count, curr1->data);
+    curr1 = curr1->next;
     count++;
   }
 
-  Node *tmp = n->next;
-  n->next = tmp->next;
-
-  free(tmp);
-
-}
-
-void printList(Node *n) {
-  while (n) {
-    printf("%d\n", n->data);
-    n = n->next;
+  while (curr2) {
+    ll_add_nth_node(new_list, count, curr2->data);
+    curr2 = curr2->next;
+    count++;
   }
-}
-
-void free_list(LinkedList *list) {
-  Node *n = list->head;
   
-  while (n) {
-    Node *tmp = n;
-    n = n->next;
-    free(tmp);
-  }
-
-  free(list);
+  return new_list;
 }
+
+
