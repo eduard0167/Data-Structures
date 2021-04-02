@@ -76,10 +76,10 @@ hashtable_t *ht_create(unsigned int hmax, unsigned int (*hash_function)(void*),
 		int (*compare_function)(void*, void*))
 {
 	hashtable_t *ht = malloc(sizeof(hashtable_t));
-  DIE(!ht, "malloc() for hashtable failed\n");
+  	DIE(!ht, "malloc() for hashtable failed\n");
 	
 	ht->buckets = malloc(hmax * sizeof(linked_list_t *));
-  DIE(!ht->buckets, "malloc() for buckets failed\n");
+  	DIE(!ht->buckets, "malloc() for buckets failed\n");
 
 	for (int i = 0; i < hmax; i++) {
 		ht->buckets[i] = ll_create(sizeof(info_t));
