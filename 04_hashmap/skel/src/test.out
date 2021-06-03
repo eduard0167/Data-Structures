@@ -1,0 +1,47 @@
+==6105== Memcheck, a memory error detector
+==6105== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==6105== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==6105== Command: ./a.out
+==6105== 
+
+Task 1
+Author: Aldous Huxley	Title: Brave New World	Year: 1932	Status: Borrowed
+Author: George Orwell	Title: 1984	Year: 1949	Status: On the shelf
+Author: George Orwell	Title: Animal Farm	Year: 1945	Status: Borrowed
+Author: J.R.R. Tolkien	Title: The Lord of the Rings	Year: 1954	Status: On the shelf
+Author: J.D. Salinger	Title: The Catcher	Year: 1951	Status: On the shelf
+
+Task 2
+Author: J.R.R. Tolkien	Title: The Lord of the Rings	Year: 1954	Status: On the shelf
+
+Task 3
+Author: George Orwell	Title: Animal Farm	Year: 1945	Status: Borrowed
+Author: George Orwell	Title: 1984	Year: 1949	Status: On the shelf
+Author: Aldous Huxley	Title: Brave New World	Year: 1932	Status: Borrowed
+Author: J.D. Salinger	Title: The Catcher	Year: 1951	Status: On the shelf
+Author: J.R.R. Tolkien	Title: The Lord of the Rings	Year: 1954	Status: On the shelf
+
+
+Task 4
+Can't find the book
+Can't find the book
+
+Bonus
+Author: Aldous Huxley	Title: Brave New World	Year: 1932	Status: Borrowed
+Author: George Orwell	Title: 1984	Year: 1949	Status: On the shelf
+Author: J.R.R. Tolkien	Title: The Lord of the Rings	Year: 1954	Status: On the shelf
+Author: J.D. Salinger	Title: The Catcher	Year: 1951	Status: On the shelf
+Author: Dante Alighieri	Title: The Divine Comedy	Year: 1472	Status: Borrowed
+Author: Paulo Coelho	Title: The Alchemist	Year: 1993	Status: On the shelf
+Author: Ray BradBury	Title: Farenheit 451	Year: 1953	Status: Borrowed
+Author: J.K. Rowling	Title: Harry Potter	Year: 1997	Status: Borrowed
+Author: Harper Lee	Title: To Kill a Mockingbird	Year: 1960	Status: On the shelf
+==6105== 
+==6105== HEAP SUMMARY:
+==6105==     in use at exit: 0 bytes in 0 blocks
+==6105==   total heap usage: 141 allocs, 141 frees, 8,038 bytes allocated
+==6105== 
+==6105== All heap blocks were freed -- no leaks are possible
+==6105== 
+==6105== For lists of detected and suppressed errors, rerun with: -s
+==6105== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
